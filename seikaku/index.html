@@ -75,6 +75,18 @@
   .bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: linear-gradient(90deg, #2b7cff, var(--cyan)); width: 0; transition: width .8s ease; }
   .trait .desc { font-size: 14px; color: var(--text); margin: 0; }
   .trait .both { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+  .channel { position: relative; margin: 24px 0 0; padding: 20px 18px 18px; border-radius: 20px; background: linear-gradient(160deg, #183466 0%, #101f3d 60%, #0d1930 100%); border: 1.5px solid rgba(63,227,255,.55); box-shadow: 0 0 18px rgba(63,227,255,.25), inset 0 1px 0 rgba(255,255,255,.06); overflow: hidden; }
+  .channel::before { content: ""; position: absolute; inset: 0; background-image: linear-gradient(rgba(63,227,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(63,227,255,.06) 1px, transparent 1px); background-size: 22px 22px; pointer-events: none; }
+  .channel > * { position: relative; }
+  .ch-head { display: flex; align-items: center; gap: 14px; margin: 0 0 12px; }
+  .ch-icon { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; border: 2px solid var(--cyan); box-shadow: 0 0 14px rgba(63,227,255,.6); }
+  .ch-name { font-size: 20px; font-weight: 800; }
+  .ch-handle { font-size: 13px; color: var(--muted); }
+  .ch-text { margin: 0 0 8px; font-size: 15px; }
+  .yt-btn { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 16px 0 10px; padding: 14px; border-radius: 14px; background: #ff0033; color: #fff; font-size: 17px; font-weight: 800; text-decoration: none; box-shadow: 0 6px 18px rgba(255,0,51,.35); }
+  .yt-btn:hover { filter: brightness(1.08); }
+  .yt-logo { width: 30px; height: 22px; flex: none; }
+  .ch-link { display: block; text-align: center; color: var(--cyan); font-size: 14px; font-weight: 700; text-decoration: none; }
   .after { background: var(--bg2); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin: 20px 0 0; font-size: 15px; }
   .after a { color: var(--cyan); font-weight: 700; }
   .retry { display: block; width: 100%; margin: 16px 0 0; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-size: 15px; cursor: pointer; }
@@ -111,10 +123,21 @@
     <h2>あなたの性格の5つの軸</h2>
     <div class="disclaimer" style="margin:0 0 16px">結果は目安で、医療や心理の診断ではありません。</div>
     <div id="traits"></div>
-    <div class="after">
-      どの性格にも、いい面と困る面があります。高いか低いかで、良い悪いは決まりません。<br>
-      性格はどこまで変えられるのか、変わる人は何をしたのかは、動画でくわしく話しています。<br>
-      <a href="https://www.youtube.com/@majishinri" target="_blank" rel="noopener">マジ心理学（YouTube）を見る</a>
+    <div class="channel">
+      <div class="ch-head">
+        <img class="ch-icon" src="../img/maji-shinri.jpg" alt="マジ心理学のアイコン" width="64" height="64">
+        <div>
+          <div class="ch-name">マジ心理学</div>
+          <div class="ch-handle">@majishinri</div>
+        </div>
+      </div>
+      <p class="ch-text">どの性格にも、いい面と困る面があります。高いか低いかで、良い悪いは決まりません。</p>
+      <p class="ch-text">性格はどこまで変えられるのか、変わる人は何をしたのか。<span class="nb">動画でくわしく話しています。</span></p>
+      <a class="yt-btn" href="https://www.youtube.com/playlist?list=PLea4hcHCP49Y" target="_blank" rel="noopener">
+        <svg class="yt-logo" viewBox="0 0 28 20" aria-hidden="true"><rect width="28" height="20" rx="5" fill="#fff"/><path d="M11.2 5.6v8.8l7.6-4.4z" fill="#ff0033"/></svg>
+        <span>ビッグファイブの動画を見る</span>
+      </a>
+      <a class="ch-link" href="https://www.youtube.com/@majishinri" target="_blank" rel="noopener">チャンネルのトップへ ›</a>
     </div>
     <button type="button" class="retry" id="retry">もう一度答える</button>
   </section>
