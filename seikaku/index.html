@@ -41,7 +41,12 @@
   .lead { color: var(--muted); font-size: 15px; margin: 0; }
   .disclaimer { border: 1.5px solid var(--cyan); border-radius: 14px; padding: 12px 16px; margin: 20px 0 0; font-size: 14px; font-weight: 700; color: var(--text); background: rgba(63,227,255,.07); box-shadow: 0 0 12px rgba(63,227,255,.45), inset 0 0 10px rgba(63,227,255,.15); }
   .note { background: var(--bg2); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; font-size: 14px; color: var(--muted); margin: 20px 0; }
-  .scale-head { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; font-size: 12px; color: var(--muted); text-align: center; line-height: 1.4; margin: 0 0 8px; position: sticky; top: 0; background: rgba(11,20,38,.92); padding: 8px 0; z-index: 2; backdrop-filter: blur(4px); }
+  .sticky { position: sticky; top: 0; z-index: 2; background: rgba(11,20,38,.94); backdrop-filter: blur(4px); padding: 10px 0 6px; margin: 0 0 8px; }
+  .pbar { display: flex; align-items: center; gap: 10px; }
+  .ptrack { flex: 1; height: 10px; border-radius: 999px; background: var(--bg2); border: 1px solid var(--line); overflow: hidden; }
+  .ptrack i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #2b7cff, var(--cyan)); box-shadow: 0 0 10px rgba(63,227,255,.6); transition: width .25s ease; }
+  #pcount { font-size: 13px; font-weight: 800; color: var(--cyan); min-width: 52px; text-align: right; }
+  .scale-head { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; font-size: 12px; color: var(--muted); text-align: center; line-height: 1.4; margin: 0 0 8px; padding: 4px 0 0; }
   .q { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 14px 12px; margin: 0 0 12px; }
   .q.missing { border-color: var(--yellow); box-shadow: 0 0 0 2px rgba(255,226,74,.25); }
   .q p { margin: 0 0 10px; font-size: 16px; font-weight: 700; }
@@ -93,7 +98,10 @@
   </div>
 
   <form id="quiz" novalidate>
-    <div class="scale-head"><div>1＝<br>当てはまらない</div><div>3＝<br>どちらでもない</div><div>5＝<br>当てはまる</div></div>
+    <div class="sticky">
+      <div class="pbar"><div class="ptrack"><i id="pfill"></i></div><span id="pcount">0 / 20</span></div>
+      <div class="scale-head"><div>1＝<br>当てはまらない</div><div>3＝<br>どちらでもない</div><div>5＝<br>当てはまる</div></div>
+    </div>
     <div id="questions"></div>
     <button type="submit" class="go">結果を見る</button>
     <div class="progress" id="progress">0 / 20 問</div>
@@ -178,8 +186,14 @@
   const form = document.getElementById("quiz");
   const progress = document.getElementById("progress");
   const answered = () => QUESTIONS.filter((_, i) => form.querySelector(`input[name=a${i}]:checked`)).length;
+  const updateBar = () => {
+    const n = answered();
+    document.getElementById("pfill").style.width = (n / 20 * 100) + "%";
+    document.getElementById("pcount").textContent = `${n} / 20`;
+    return n;
+  };
   form.addEventListener("change", (e) => {
-    progress.textContent = `${answered()} / 20 問`;
+    progress.textContent = `${updateBar()} / 20 問`;
     const q = e.target.closest(".q");
     if (q) q.classList.remove("missing");
   });
@@ -221,6 +235,7 @@
 
   document.getElementById("retry").addEventListener("click", () => {
     form.reset();
+    updateBar();
     progress.textContent = "0 / 20 問";
     document.getElementById("result").style.display = "none";
     form.style.display = "block";
