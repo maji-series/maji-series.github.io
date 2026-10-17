@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>性格の簡易チェック｜ビッグファイブ｜マジ心理学</title>
+<meta name="description" content="20の質問に答えると、性格の5つの軸（ビッグファイブ）が分かる簡易チェックです。答えはどこにも送られません。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1426;
+    --bg2: #12203b;
+    --card: #15284a;
+    --line: #23406e;
+    --text: #eef4ff;
+    --muted: #9fb3d6;
+    --cyan: #3fe3ff;
+    --yellow: #ffe24a;
+    --low: #7aa7ff;
+    --mid: #3fe3ff;
+    --high: #ffb84a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(1200px 600px at 50% -10%, #1a3566 0%, var(--bg) 60%) fixed, var(--bg);
+    color: var(--text);
+    font-family: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Hiragino Sans", sans-serif;
+    line-height: 1.7;
+    word-break: auto-phrase;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+  header { text-align: center; margin: 8px 0 24px; }
+  .brand { display: inline-block; font-size: 13px; letter-spacing: .12em; color: var(--cyan); border: 1px solid var(--line); border-radius: 999px; padding: 2px 12px; }
+  h1 { font-size: clamp(24px, 6vw, 34px); margin: 12px 0 4px; font-weight: 800; }
+  h1 span { color: var(--cyan); text-shadow: 0 0 18px rgba(63,227,255,.45); }
+  .nb { display: inline-block; }
+  .lead { color: var(--muted); font-size: 15px; margin: 0; }
+  .disclaimer { border: 1.5px solid var(--cyan); border-radius: 14px; padding: 12px 16px; margin: 20px 0 0; font-size: 14px; font-weight: 700; color: var(--text); background: rgba(63,227,255,.07); box-shadow: 0 0 12px rgba(63,227,255,.45), inset 0 0 10px rgba(63,227,255,.15); }
+  .note { background: var(--bg2); border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px; font-size: 14px; color: var(--muted); margin: 20px 0; }
+  .scale-head { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; font-size: 12px; color: var(--muted); text-align: center; line-height: 1.4; margin: 0 0 8px; position: sticky; top: 0; background: rgba(11,20,38,.92); padding: 8px 0; z-index: 2; backdrop-filter: blur(4px); }
+  .q { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 14px 12px; margin: 0 0 12px; }
+  .q.missing { border-color: var(--yellow); box-shadow: 0 0 0 2px rgba(255,226,74,.25); }
+  .q p { margin: 0 0 10px; font-size: 16px; font-weight: 700; }
+  .q p small { color: var(--muted); font-weight: 500; margin-right: 6px; }
+  .opts { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .opts label { display: block; cursor: pointer; }
+  .opts input { position: absolute; opacity: 0; pointer-events: none; }
+  .opts span { display: flex; align-items: center; justify-content: center; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg2); font-weight: 800; font-size: 16px; color: var(--muted); transition: .15s; }
+  .opts input:checked + span { background: var(--cyan); color: #04223a; border-color: var(--cyan); box-shadow: 0 0 14px rgba(63,227,255,.5); }
+  .opts input:focus-visible + span { outline: 2px solid var(--yellow); outline-offset: 2px; }
+  button { font-family: inherit; }
+  .go { display: block; width: 100%; margin: 20px 0 8px; padding: 16px; border: 0; border-radius: 16px; background: var(--yellow); color: #1b1b1b; font-size: 18px; font-weight: 800; cursor: pointer; }
+  .go:hover { filter: brightness(1.05); }
+  .progress { text-align: center; color: var(--muted); font-size: 13px; }
+  #result { display: none; margin-top: 28px; }
+  #result h2 { font-size: 22px; text-align: center; margin: 0 0 16px; }
+  .trait { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; margin: 0 0 12px; }
+  .trait .top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+  .trait .name { font-size: 18px; font-weight: 800; }
+  .trait .name small { color: var(--muted); font-size: 12px; font-weight: 500; margin-left: 6px; }
+  .badge { font-size: 13px; font-weight: 800; border-radius: 999px; padding: 2px 10px; }
+  .badge.low { background: rgba(122,167,255,.18); color: var(--low); }
+  .badge.mid { background: rgba(63,227,255,.16); color: var(--mid); }
+  .badge.high { background: rgba(255,184,74,.18); color: var(--high); }
+  .bar { position: relative; height: 12px; border-radius: 999px; background: var(--bg2); margin: 10px 0 8px; overflow: hidden; }
+  .bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 999px; background: linear-gradient(90deg, #2b7cff, var(--cyan)); width: 0; transition: width .8s ease; }
+  .trait .desc { font-size: 14px; color: var(--text); margin: 0; }
+  .trait .both { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+  .after { background: var(--bg2); border: 1px solid var(--line); border-radius: 16px; padding: 16px; margin: 20px 0 0; font-size: 15px; }
+  .after a { color: var(--cyan); font-weight: 700; }
+  .retry { display: block; width: 100%; margin: 16px 0 0; padding: 12px; border-radius: 14px; border: 1px solid var(--line); background: transparent; color: var(--muted); font-size: 15px; cursor: pointer; }
+  footer { margin-top: 32px; font-size: 12px; color: var(--muted); text-align: center; }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">マジ心理学</div>
+    <h1>性格の<span>簡易チェック</span></h1>
+    <p class="lead">20の質問で、あなたの性格の<span class="nb">5つの軸</span><span class="nb">（ビッグファイブ）</span>が分かります</p>
+  </header>
+
+  <div class="disclaimer">これは研究で使われている性格検査（IPIP の20問版）をもとに、日本の暮らしに合う言葉に置き換えた簡易チェックです。</div>
+
+  <div class="note">
+    いまの自分に、どれくらい当てはまるかを選んでください。深く考えすぎず、直感で大丈夫です（2〜3分）。<br>
+    答えはこの画面の中で計算するだけで、どこにも送られず、保存もされません。
+  </div>
+
+  <form id="quiz" novalidate>
+    <div class="scale-head"><div>1＝<br>当てはまらない</div><div>3＝<br>どちらでもない</div><div>5＝<br>当てはまる</div></div>
+    <div id="questions"></div>
+    <button type="submit" class="go">結果を見る</button>
+    <div class="progress" id="progress">0 / 20 問</div>
+  </form>
+
+  <section id="result" aria-live="polite">
+    <h2>あなたの性格の5つの軸</h2>
+    <div class="disclaimer" style="margin:0 0 16px">結果は目安で、医療や心理の診断ではありません。</div>
+    <div id="traits"></div>
+    <div class="after">
+      どの性格にも、いい面と困る面があります。高いか低いかで、良い悪いは決まりません。<br>
+      性格はどこまで変えられるのか、変わる人は何をしたのかは、動画でくわしく話しています。<br>
+      <a href="https://www.youtube.com/@majishinri" target="_blank" rel="noopener">マジ心理学（YouTube）を見る</a>
+    </div>
+    <button type="button" class="retry" id="retry">もう一度答える</button>
+  </section>
+
+  <footer>
+    © マジ心理学
+  </footer>
+</div>
+
+<script>
+  // 質問（IPIP の Mini-IPIP 20問をもとに、日本の暮らしの言葉に置き換えたもの。r は逆向きの質問）
+  const QUESTIONS = [
+    { t: "E", r: false, q: "友達や同僚との集まりでは、自分から場を盛り上げるほうだ" },
+    { t: "A", r: false, q: "人の気持ちに、すぐ共感するほうだ" },
+    { t: "C", r: false, q: "やるべき家事や用事は、すぐに片づける" },
+    { t: "N", r: false, q: "気分の浮き沈みが激しいほうだ" },
+    { t: "O", r: false, q: "想像をふくらませるのが好きだ" },
+    { t: "E", r: true, q: "ふだん、口数は少ないほうだ" },
+    { t: "A", r: true, q: "人の悩みには、あまり興味がわかない" },
+    { t: "C", r: true, q: "使った物を、元の場所に戻し忘れることが多い" },
+    { t: "N", r: true, q: "たいていの時間は、落ち着いていられる" },
+    { t: "O", r: true, q: "ものごとの意味や仕組みを考える話には、あまり興味がない" },
+    { t: "E", r: false, q: "飲み会や集まりでは、いろいろな人に自分から話しかける" },
+    { t: "A", r: false, q: "まわりの人の気持ちが、自分のことのように伝わってくる" },
+    { t: "C", r: false, q: "部屋や机は、きちんと整っているほうが落ち着く" },
+    { t: "N", r: false, q: "ちょっとしたことで、気持ちが乱れやすい" },
+    { t: "O", r: true, q: "目に見えないことを考えるのは苦手だ" },
+    { t: "E", r: true, q: "人が集まる場では、目立たないように後ろのほうにいる" },
+    { t: "A", r: true, q: "正直、他人のことにはあまり関心がない" },
+    { t: "C", r: true, q: "予定や持ち物の管理で、よく失敗する" },
+    { t: "N", r: true, q: "落ち込むことは、めったにない" },
+    { t: "O", r: true, q: "想像力があるほうではない" },
+  ];
+
+  const TRAITS = {
+    O: { name: "開放性", sub: "新しいことが好き",
+      high: "新しいことや知らないことに、わくわくするタイプです。発想が広がりやすい一方、慣れた作業には飽きやすいことも。",
+      mid: "新しいことも、慣れたやり方も、場面に合わせて選べるタイプです。",
+      low: "慣れたやり方を大事にするタイプです。地に足がついていて、決まったことを着実にこなせます。" },
+    C: { name: "誠実性", sub: "まじめ・コツコツ",
+      high: "決めたことをコツコツ続けられるタイプです。計画的な一方、予定外のことに疲れやすいことも。",
+      mid: "きちんとする場面と、ゆるめる場面を使い分けるタイプです。",
+      low: "その場の思いつきで動けるタイプです。柔軟な一方、続けることや片づけは仕組みで助けると楽になります。" },
+    E: { name: "外向性", sub: "人づきあいが好き",
+      high: "人と会うと元気が出るタイプです。人の輪に入るのが得意な一方、一人の時間が続くと退屈しやすいことも。",
+      mid: "人と過ごす時間も、一人の時間も、どちらも大事にできるタイプです。",
+      low: "一人の時間で元気を取り戻すタイプです。落ち着いて考えられる一方、大人数の場では疲れやすいことも。" },
+    A: { name: "協調性", sub: "人にやさしい",
+      high: "人にやさしく、ぶつかるのを避けるタイプです。好かれやすい一方、頼まれると断りにくいことも。",
+      mid: "人に合わせる場面と、自分を通す場面を使い分けるタイプです。",
+      low: "言いたいことを、はっきり言えるタイプです。流されにくい一方、言い方で誤解されることも。" },
+    N: { name: "神経症傾向", sub: "気持ちが揺れやすい",
+      high: "気持ちが揺れやすいタイプです。危ないことに早く気づける一方、不安や落ち込みを抱えやすいことも。5つの中で、いちばん変えやすい性格です。",
+      mid: "気持ちが揺れる日も、落ち着いている日もある、まん中のタイプです。",
+      low: "どっしり構えていられるタイプです。動じにくい一方、注意が必要なことを見過ごさないように。" },
+  };
+  const ORDER = ["O", "C", "E", "A", "N"];
+
+  const box = document.getElementById("questions");
+  QUESTIONS.forEach((item, i) => {
+    const div = document.createElement("div");
+    div.className = "q";
+    div.id = "q" + i;
+    const opts = [1, 2, 3, 4, 5].map((v) => `<label><input type="radio" name="a${i}" value="${v}" aria-label="${v}"><span>${v}</span></label>`).join("");
+    div.innerHTML = `<p><small>Q${i + 1}</small>${item.q}</p><div class="opts" role="radiogroup">${opts}</div>`;
+    box.appendChild(div);
+  });
+
+  const form = document.getElementById("quiz");
+  const progress = document.getElementById("progress");
+  const answered = () => QUESTIONS.filter((_, i) => form.querySelector(`input[name=a${i}]:checked`)).length;
+  form.addEventListener("change", (e) => {
+    progress.textContent = `${answered()} / 20 問`;
+    const q = e.target.closest(".q");
+    if (q) q.classList.remove("missing");
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const missing = QUESTIONS.map((_, i) => i).filter((i) => !form.querySelector(`input[name=a${i}]:checked`));
+    if (missing.length) {
+      missing.forEach((i) => document.getElementById("q" + i).classList.add("missing"));
+      document.getElementById("q" + missing[0]).scrollIntoView({ behavior: "smooth", block: "center" });
+      progress.textContent = `あと ${missing.length} 問、答えていない質問があります`;
+      return;
+    }
+    const sum = { O: 0, C: 0, E: 0, A: 0, N: 0 };
+    QUESTIONS.forEach((item, i) => {
+      const v = Number(form.querySelector(`input[name=a${i}]:checked`).value);
+      sum[item.t] += item.r ? 6 - v : v;
+    });
+    const out = document.getElementById("traits");
+    out.innerHTML = "";
+    ORDER.forEach((k) => {
+      const s = sum[k];                       // 4〜20
+      const pct = Math.round(((s - 4) / 16) * 100);
+      const band = s <= 9 ? "low" : s >= 15 ? "high" : "mid";
+      const label = { low: "低め", mid: "ふつう", high: "高め" }[band];
+      const t = TRAITS[k];
+      const div = document.createElement("div");
+      div.className = "trait";
+      div.innerHTML = `<div class="top"><div class="name">${t.name}<small>${t.sub}</small></div><span class="badge ${band}">${label}</span></div>
+        <div class="bar"><i style="width:0"></i></div><p class="desc">${t[band]}</p>`;
+      out.appendChild(div);
+      requestAnimationFrame(() => setTimeout(() => { div.querySelector(".bar i").style.width = Math.max(4, pct) + "%"; }, 60));
+    });
+    form.style.display = "none";
+    const res = document.getElementById("result");
+    res.style.display = "block";
+    res.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  document.getElementById("retry").addEventListener("click", () => {
+    form.reset();
+    progress.textContent = "0 / 20 問";
+    document.getElementById("result").style.display = "none";
+    form.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
+</body>
+</html>
